@@ -31,6 +31,13 @@ Identify the cheapest PBM Overall
 
 Display your findings in a visually compelling dashboard that will allow non-technical stakeholders to interpret the analysis.
 
+### Initial Ideas for dashboard application by Qiping
+Deploying a Flask application on AWS - using Amazon's Elastic Beanstalk and RDS
+AWS — Amazon Web Services. A collection of services for hosting and running websites provided by the company Amazon. We will use their EC2 service and Elastic Beanstalk service.
+RDS - is a web service that makes it easier to set up, operate, and scale a relational database in the cloud. It provides cost-efficient, resizable capacity for an industry-standard relational database and manages common database administration tasks.
+Elastic Beanstalk — A service offered by Amazon which simplifies deploying your code from your local computer to your EC2 instance on AWS.
+Ideally, we will launch Flask application to AWS Elastic Beanstalk. It also uses AWS RDS for a database backend.
+
 ## Challenges
 
 The data is vast and finding visualization solutions that allow for easily digestible browsing of the data will take some creativity.
