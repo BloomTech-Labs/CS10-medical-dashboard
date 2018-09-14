@@ -165,13 +165,29 @@ df_1.groupby(['PBMVendor','DrugLabelName'], as_index=False)['UnitCost'].mean()
 most_common = df_1[df_1.DrugLabelName != 'PROAIR HFA AER']
 most_common['DrugLabelName'].value_counts().idxmax()
 
-# Create DF for PBMs of top 5 most common drugs in dataset
-# 1- PROAIR HFA AER
-# 2- HYDROCHLOROT TAB 25MG
-# 3- AZITHROMYCIN TAB 250MG
+# Find the 5 most common druglabelnames in the dataset
+# 1- LISINOPRIL
+# 2- PROAIR HFA AER
+# 3- FLUTICASONE SPR 50MCG
 # 4- OMEPRAZOLE CAP 20MG
-# 5- LISINOPRIL TAB 10MG
-#
+# 5- SIMVASTATIN
+
+print(drug1LISIN.PBMVendor.unique())
+print(drug2PRO.PBMVendor.unique())
+print(drug3FLUT.PBMVendor.unique())
+print(drug4OMEP.PBMVendor.unique())
+print(drug5SIMVAS.PBMVendor.unique())
+
+# PBM results
+# ['MedImpact' 'Medco' 'CVSPAL4000']
+# ['CVSPAL4000' 'Welldyne' 'National' 'Envision']
+# ['CVSPAL4000' 'Welldyne' 'Envision']
+# ['CVSPAL4000' 'Welldyne' 'Envision']
+# ['MedImpact' 'Medco' 'CVSPAL4000']
+
+
+
+# Not sure if below is still relevant
 col_list = ['PBMVendor', 'DrugLabelName']
 top5drugs = df_1[col_list]
 
