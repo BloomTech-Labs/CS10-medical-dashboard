@@ -26,7 +26,9 @@ I (Ryan A.) will need to collect the email addresses of the team members in orde
 ## MVP Objectives:
 
 Identify the cheapest pharmacy in each zip code for a given drug
+
 Identify the cheapest PBM for a given drug
+
 Identify the cheapest PBM Overall
 
 Display your findings in a visually compelling dashboard that will allow non-technical stakeholders to interpret the analysis.
@@ -34,16 +36,23 @@ Display your findings in a visually compelling dashboard that will allow non-tec
 ## Challenges
 
 The data is vast and finding visualization solutions that allow for easily digestible browsing of the data will take some creativity.
+
 The data will be hosted in a SQL database to be interacted with via SQL queries.
+
 The data is in the form of 15 different pipe-delimited CSV files all of different sizes which will need to be managed appropriately.
+
 Specific drug information is not listed in the dataset, rather the NDC (National Drug Code) is given. These will need to be matched with the appropriate drug information.
+
 Drug prices should be compared on a price-per-pill basis, however, this feature is not found in the dataset.
 
 ## The Deliverable
 
 A web-accessible report/dashboard that makes plain the 3 MVP objectives.
+
 CSV files can be uploaded to something like MySQL Workbench for easier sharing and querying. 
+
 Dashboarding tools like Plotly Dash could be a good python-based graphing solution. 
+
 All code for data cleaning and analysis should be available in a REPRODUCIBLE Github Repository.
 
 ## The Business Case:
@@ -76,7 +85,7 @@ Zeomaga
 
 Athena Health
 
-## Healthcare makes up 18% of the US economy. There is a lot of opportunity for cost savings.This kind of analysis and reporting is a key component to addressing runaway medical costs.
+#### Healthcare makes up 18% of the US economy. There is a lot of opportunity for cost savings.This kind of analysis and reporting is a key component to addressing runaway medical costs.
 
 
 **References:**
