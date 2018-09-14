@@ -149,3 +149,39 @@ drug_names['DrugLabelName'] = drug_names['DrugLabelName'].apply(lambda drug: ' '
 # 'PharmacyState', 'PharmacyStreetAddress1', 'PharmacyTaxId',
 # 'PrescriberID', 'Quantity', 'RxNumber', 'SeqNum', 'UnitMeasure',
 # 'punbr_grnbr', 'TotalCost', 'UnitCost', 'PharmacyZip']
+
+
+
+### Clayton's Code
+# Effective exploratory code
+#
+print(df_1.PBMVendor.unique())
+print(df_1.DrugLabelName.nunique())
+df_1.groupby(['PBMVendor'], as_index=False)['UnitCost'].mean()
+df_1.groupby(['PBMVendor','DrugLabelName'], as_index=False)['UnitCost'].mean()
+
+# 5x for top 5 most common drugs
+#
+most_common = df_1[df_1.DrugLabelName != 'PROAIR HFA AER']
+most_common['DrugLabelName'].value_counts().idxmax()
+
+# Create DF for PBMs of top 5 most common drugs in dataset
+# 1- PROAIR HFA AER
+# 2- HYDROCHLOROT TAB 25MG
+# 3- AZITHROMYCIN TAB 250MG
+# 4- OMEPRAZOLE CAP 20MG
+# 5- LISINOPRIL TAB 10MG
+#
+col_list = ['PBMVendor', 'DrugLabelName']
+top5drugs = df_1[col_list]
+
+# Unique PBMs of top5drugs DF
+#
+top5drugs.PBMVendor.unique()
+
+# 5 DFs for each of 5 most common drugs
+drug1PRO = top5drugs.loc[top5drugs['DrugLabelName'] == 'PROAIR HFA AER']
+drug2HYDRO = top5drugs.loc[top5drugs['DrugLabelName'] == 'HYDROCHLOROT TAB 25MG']
+drug3AZIT = top5drugs.loc[top5drugs['DrugLabelName'] == 'AZITHROMYCIN TAB 250MG']
+drug4OMEP = top5drugs.loc[top5drugs['DrugLabelName'] == 'OMEPRAZOLE CAP 20MG']
+drug5LISI = top5drugs.loc[top5drugs['DrugLabelName'] == 'LISINOPRIL TAB 10MG']
