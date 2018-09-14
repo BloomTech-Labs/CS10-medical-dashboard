@@ -152,6 +152,28 @@ drug_names['DrugLabelName'] = drug_names['DrugLabelName'].apply(lambda drug: ' '
 
 
 
+# Simple function to print the cheapest pharmacy for given drug in given zipcode from table.
+# No checks for errors included, mail order drugs not compared.
+def get_cheapest_pharm(zipcode, drug, table):
+    # Filter table by zipcode then drug
+    table = table[table.PharmacyZip==str(zipcode)]
+    table = table[table.DrugLabelName==str(drug)]
+    # Group remaining claims by Pharmacy then take mean of numeric values
+    pharmacies = table.groupby(['PharmacyName']).mean()
+    # Return pharmacy name for min unit cost
+    pharmacy = pharmacies.UnitCost.idxmin()
+    # Filter table by pharmacy name so we can print address and city with name
+    table = table[table.PharmacyName==pharmacy]
+    print('Pharmacy:\n{}\nAddress:\n{}\n{}'.format(table.PharmacyName.iloc[0], 
+                                                   table.PharmacyStreetAddress1.iloc[0],
+                                                   table.PharmacyCity.iloc[0]))
+
+    
+    
+    
+    
+    
+    
 ### Clayton's Code
 # Effective exploratory code
 #
