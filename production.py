@@ -165,12 +165,25 @@ df_1.groupby(['PBMVendor','DrugLabelName'], as_index=False)['UnitCost'].mean()
 most_common = df_1[df_1.DrugLabelName != 'PROAIR HFA AER']
 most_common['DrugLabelName'].value_counts().idxmax()
 
-# Create DF for PBMs of top 5 most common drugs in dataset
-# 1- PROAIR HFA AER
-# 2- HYDROCHLOROT TAB 25MG
-# 3- AZITHROMYCIN TAB 250MG
+# Find the 5 most common druglabelnames in the dataset
+# 1- LISINOPRIL
+# 2- PROAIR HFA AER
+# 3- FLUTICASONE SPR 50MCG
 # 4- OMEPRAZOLE CAP 20MG
-# 5- LISINOPRIL TAB 10MG
+# 5- SIMVASTATIN
+
+print(drug1LISIN.PBMVendor.unique())
+print(drug2PRO.PBMVendor.unique())
+print(drug3FLUT.PBMVendor.unique())
+print(drug4OMEP.PBMVendor.unique())
+print(drug5SIMVAS.PBMVendor.unique())
+
+# PBM results
+# ['MedImpact' 'Medco' 'CVSPAL4000']
+# ['CVSPAL4000' 'Welldyne' 'National' 'Envision']
+# ['CVSPAL4000' 'Welldyne' 'Envision']
+# ['CVSPAL4000' 'Welldyne' 'Envision']
+# ['MedImpact' 'Medco' 'CVSPAL4000']
 #
 col_list = ['PBMVendor', 'DrugLabelName']
 top5drugs = df_1[col_list]
@@ -185,3 +198,24 @@ drug2HYDRO = top5drugs.loc[top5drugs['DrugLabelName'] == 'HYDROCHLOROT TAB 25MG'
 drug3AZIT = top5drugs.loc[top5drugs['DrugLabelName'] == 'AZITHROMYCIN TAB 250MG']
 drug4OMEP = top5drugs.loc[top5drugs['DrugLabelName'] == 'OMEPRAZOLE CAP 20MG']
 drug5LISI = top5drugs.loc[top5drugs['DrugLabelName'] == 'LISINOPRIL TAB 10MG']
+
+# Bar Graphs for each Drug and their PBMs
+drug1LISIN_2=drug1LISIN.groupby(['PBMVendor','DrugLabelName']).size()
+drug1LISIN_2=drug1LISIN_2.unstack()
+drug1LISIN_2.plot(kind='bar')
+
+drug2PRO_2=drug2PRO.groupby(['PBMVendor','DrugLabelName']).size()
+drug2PRO_2=drug2PRO_2.unstack()
+drug2PRO_2.plot(kind='bar')
+
+drug3FLUT_2=drug3FLUT.groupby(['PBMVendor','DrugLabelName']).size()
+drug3FLUT_2=drug3FLUT_2.unstack()
+drug3FLUT_2.plot(kind='bar')
+
+drug4OMEP_2=drug4OMEP.groupby(['PBMVendor','DrugLabelName']).size()
+drug4OMEP_2=drug4OMEP_2.unstack()
+drug4OMEP_2.plot(kind='bar')
+
+drug5SIMVAS_2=drug5SIMVAS.groupby(['PBMVendor','DrugLabelName']).size()
+drug5SIMVAS_2=drug5SIMVAS_2.unstack()
+drug5SIMVAS_2.plot(kind='bar')
