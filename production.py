@@ -136,8 +136,23 @@ rx_info['PharmacyZip'] = rx_info.apply(lambda row: mail_order_pharm(row), axis=1
 drug_names = rx_info.drop(columns=['PharmacyZipCode'])
 
 
+# Fix random white space
+def rid_whitespace(value):
+    if type(value) == str:
+        return ' '.join(value.split())
+    else:
+        return value
+    
+
 # Get rid of erroneous white space in DrugLabelName
-drug_names['DrugLabelName'] = drug_names['DrugLabelName'].apply(lambda drug: ' '.join(drug.split()))
+drug_names.DrugLabelName = drug_names.DrugLabelName.apply(lambda drug: rid_whitespace(drug))
+drug_names.PharmacyNPI = drug_names.PharmacyNPI.apply(lambda NPI: rid_whitespace(NPI))
+drug_names.PharmacyName = drug_names.PharmacyName.apply(lambda name: rid_whitespace(name))
+drug_names.PharmacyStreetAddress1 = drug_names.PharmacyStreetAddress1.apply(lambda address: rid_whitespace(address))
+drug_names.PharmacyCity = drug_names.PharmacyCity.apply(lambda city: rid_whitespace(city))
+
+
+
 
 # Columns: ['AHFSTherapeuticClassCode', 'CoInsurance', 'CompoundDrugIndicator',
 # 'Copay', 'DAWCode', 'DateFilled', 'DaysSupply', 'Deductible',
@@ -154,20 +169,100 @@ drug_names['DrugLabelName'] = drug_names['DrugLabelName'].apply(lambda drug: ' '
 
 # Simple function to print the cheapest pharmacy for given drug in given zipcode from table.
 # No checks for errors included, mail order drugs not compared.
-def get_cheapest_pharm(zipcode, drug, table):
-    # Filter table by zipcode then drug
-    table = table[table.PharmacyZip==str(zipcode)]
-    table = table[table.DrugLabelName==str(drug)]
-    # Group remaining claims by Pharmacy then take mean of numeric values
+def _cheapest_three(df):
     pharmacies = table.groupby(['PharmacyName']).mean()
-    # Return pharmacy name for min unit cost
-    pharmacy = pharmacies.UnitCost.idxmin()
-    # Filter table by pharmacy name so we can print address and city with name
-    table = table[table.PharmacyName==pharmacy]
-    print('Pharmacy:\n{}\nAddress:\n{}\n{}'.format(table.PharmacyName.iloc[0], 
-                                                   table.PharmacyStreetAddress1.iloc[0],
-                                                   table.PharmacyCity.iloc[0]))
+    
+    if len(pharmacies.UnitCost.values) >= 3:
+        n = 3
+        args = np.argpartition(np.array(pharmacies.UnitCost.values), 3)[:3]
+    elif len(table.UnitCost.values) == 2:
+        n = 2
+        args = np.argpartition(np.array(pharmacies.UnitCost.values), 2)[:2]
+    else:
+        n = 1
+        args = 0
+    results = pd.DataFrame(pharmacies.iloc[args])
+    
+    best = [[results.PharmacyName.iloc[0], results.PharmacyStreetAddress1.iloc[0],
+             results.PharmacyCity.iloc[0]]]
+'''             ##TODO
+    for idx in list(range(1n)):
+        []
+    return table.iloc[args]
+'''    
 
+def get_best_options(zipcode, drug, number, df):
+    
+    df['TotalCost'] = df.apply(lambda row: float(row.TotalCost), axis=1)
+    df['UnitCost'] = df.apply(lambda row: float(row.UnitCost), axis=1)
+    df['DrugShortName'] = df.apply(lambda row: row.DrugLabelName.split()[0])
+    df['PharmZip'] = df.apply(lambda row: str(row.PharmacyZip)[:3])
+
+    zipcode_short = str(zipcode)[:3]
+    drug_basic = drug.split()[0]
+    
+    mail_order = df[df.PharmacyZip=='99999']
+    zip_codes = df[df.PharmacyZip!='99999']
+
+    if drug in set(df.DrugLabelName.values):
+        mail_order_exact = mail_order[mail_order.DrugLabelName==drug]
+        mail_order3 = _cheapest_three(mail_order)
+
+    if str(zipcode) in set(df.PharmacyZip.values):
+        in_zip = zip_codes[zip_codes.PharmacyZip==zipcode]
+        top3_pharmacies = _cheapest_three(in_zip)
+    
+    if not mail_order3:
+        mail_order = mail_order[mail_order.DrugShortName==drug_basic]
+        mail_order_similar = _cheapest_three(mail_order)
+
+    if not top3_pharmacies:
+        zip_codes = zip_codes[zip_codes.PharmZip == zipcode_short]
+        nearby_zips_3 = _cheapest_three(zip_codes)
+        
+    if not mail_order_similar:
+        mail_order_pharm = mail_order.PharmacyName.unique()
+
+        m_o_pharm_freqs = []
+
+        for pharmacy in mail_order_pharm:
+            m_o_pharm_freqs.append(mail_order.PharmacyName.tolist().count(pharmacy))
+            mail_order_args = np.argpartition(np.array(m_o_pharm_freqs), 3)[:3]
+            big_3_mail_order = mail_order_pharm[args]
+        
+    if not close3:
+        zip_codes = zip_codes[zip_codes.PharmacyZip==zipcode_short]
+        nearby_zips_3 = _cheapest_three(zip_codes)
+
+    
+    if drug_list3 and mail_order3:
+        return # TO DO
+    elif drug_list3 and similar_medications3:
+        return # TO DO
+    elif drug_list3 and common_3_mo:
+        return # TO DO
+    elif mail_order3 and close3:
+        return # TO DO
+    elif mail_order3 and close_pharm:
+        return # TO DO
+    elif close3 and common_3_mo:
+        return # TO DO
+    elif common_3_mo and close3:
+        return # TO DO
+    else:
+        return # common_3_mo
+
+        
+        
+'''            
+    return {
+        'Pharmacy Name' : table.PharmacyName.iloc[0],
+        'Address' : table.PharmacyStreetAddress1.iloc[0],
+        'City' : table.PharmacyCity.iloc[0],
+        'Zip' : table.PharmacyZip.iloc[0],
+        'Average Price' : '${0:.2f}'.format(number*table.UnitCost.iloc[0]),
+        'Mail Order Pharmacy' : mailorder.PharmacyName.iloc[0],
+        'Average Mail Order Price' : '${0:.2f}'.format(number*mailorder.UnitCost.iloc[0])}'''
     
     
     
