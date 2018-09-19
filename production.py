@@ -118,6 +118,15 @@ def get_zip(row):
 # Implementing the function to create a second zip code column
 rx_info['PharmacyZipCode'] = rx_info.apply(lambda row: get_zip(row), axis=1)
 
+# Define a second drug name code column in the dataframe
+# to get rid of dosage info
+rx_info['DrugShortName'] = rx_info.apply(lambda row: row.DrugLabelName.split()[0])
+
+# Define a second pharmacy zip code column in the dataframe
+# to include a larger area
+zip_codes['PharmZip'] = zip_codes.apply(lambda row: str(row.PharmacyZip)[:3])
+
+
 
 # Mail order pharmacies are not restricted to specific zip codes, so we encode them
 # with nonexistent zip codes
@@ -223,18 +232,10 @@ def _get_df(df, drug, drug_basic):
 def get_best_options(zipcode, drug, number, df):
     # Ensure unit cost is considered a float
     df['UnitCost'] = df.apply(lambda row: float(row.UnitCost), axis=1)
-    
-    # Define a second drug name column to exclude dosage information and
-    # broaden the search
-    df['DrugShortName'] = df.apply(lambda row: row.DrugLabelName.split()[0])
-    
+        
     # Separate the dataframe into mail order pharmacies and local pharmacies
     mail_order = df[df.PharmacyZip=='MailOrder']
     zip_codes = df[df.PharmacyZip!='MailOrder']
-
-    # Define a second pharmacy zip code column in the local pharmacy dataframe
-    # to include a larger area and broaden the search
-    zip_codes['PharmZip'] = zip_codes.apply(lambda row: str(row.PharmacyZip)[:3])
 
     # Define variables from the input zip code and drug name to match the
     # two engineered columns
@@ -288,9 +289,6 @@ def get_best_options(zipcode, drug, number, df):
 
 # Function to get best PBM for certain medication
 def best_pbm_for_med(drug, df):
-    # Define a second drug name column to exclude dosage information and
-    # broaden the search
-    df['DrugShortName'] = df.apply(lambda row: row.DrugLabelName.split()[0])
     # Define variable from the input drug name to match the engineered column
     drug_basic = drug.split()[0]
     
