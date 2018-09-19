@@ -167,103 +167,123 @@ drug_names.PharmacyCity = drug_names.PharmacyCity.apply(lambda city: rid_whitesp
 
 
 
-# Simple function to print the cheapest pharmacy for given drug in given zipcode from table.
-# No checks for errors included, mail order drugs not compared.
-def _cheapest_three(df):
+# Helper function for get_best_options/get_df to return a sorted dataframe of
+# a specified number of entries based on price
+def _cheapest(df, n, pharm_type='local'):
+    # Group the input dataframe by pharmacy
     pharmacies = table.groupby(['PharmacyName']).mean()
     
-    if len(pharmacies.UnitCost.values) >= 3:
-        n = 3
-        args = np.argpartition(np.array(pharmacies.UnitCost.values), 3)[:3]
-    elif len(table.UnitCost.values) == 2:
-        n = 2
-        args = np.argpartition(np.array(pharmacies.UnitCost.values), 2)[:2]
+    # Get indices corresponding to pharmacies sorted from lowest unit
+    # cost to highest unit cost
+    idx_sort = np.argsort(np.array(pharmacies.UnitCost.values))
+    
+    # If there are more than n entries, limit the output to n, with specified
+    # columns
+    if len(idx_sort) > n:
+        # Specify which columns to output based on whether the pharmacy is local
+        # or mail order
+        if pharm_type = 'local':
+            return pd.DataFrame(pharmacies).loc(columns=['PharmacyName', 
+                                                         'PharmacyStreetAddress1',
+                                                         'PharmacyCity',
+                                                         'UnitCost']).iloc[idx_sort[:n]]
+        else:
+            return pd.DataFrame(pharmacies).loc(columns=['PharmacyName', 
+                                                         'UnitCost']).iloc[idx_sort[:n]]
+    # Else, return all results in order with specified columns
     else:
-        n = 1
-        args = 0
-    results = pd.DataFrame(pharmacies.iloc[args])
-    
-    best = [[results.PharmacyName.iloc[0], results.PharmacyStreetAddress1.iloc[0],
-             results.PharmacyCity.iloc[0]]]
-'''             ##TODO
-    for idx in list(range(1n)):
-        []
-    return table.iloc[args]
-'''    
+        # Specify which columns to output based on whether the pharmacy is local
+        # or mail order
+        if pharm_type = 'local':
+            return pd.DataFrame(pharmacies).loc(columns=['PharmacyName',
+                                                         'PharmacyStreetAddress1',
+                                                         'PharmacyCity',
+                                                         'UnitCost']).iloc[idx_sort]
+        else:
+            return pd.DataFrame(pharmacies).loc(columns=['PharmacyName',
+                                                         'UnitCost']).iloc[idx_sort]
 
+# Helper function to return the desirable dataframe given the medication and parent df
+def _get_df(df, drug, drug_basic):
+    # Check if drug name exists in the pharmacy data, if yes
+    # filter the dataset based on that drug name
+    if drug in set(df.DrugLabelName.values):
+        df = df[df.DrugLabelName==drug]
+        return df
+    # Else, check if broader drug name exists in dataset, if yes
+    # filter based on the shorter name
+    elif drug_basic in set(df.DrugShortName):
+        df = df[df.DrugShortName==drug_basic]
+        return df
+    else:
+        return pd.DataFrame()
+
+# Function to retrieve information in the form of data tables with the cheapest
+# pharmacies locally and by mail order
 def get_best_options(zipcode, drug, number, df):
-    
-    df['TotalCost'] = df.apply(lambda row: float(row.TotalCost), axis=1)
+    # Ensure unit cost is considered a float
     df['UnitCost'] = df.apply(lambda row: float(row.UnitCost), axis=1)
+    
+    # Define a second drug name column to exclude dosage information and
+    # broaden the search
     df['DrugShortName'] = df.apply(lambda row: row.DrugLabelName.split()[0])
-    df['PharmZip'] = df.apply(lambda row: str(row.PharmacyZip)[:3])
+    
+    # Separate the dataframe into mail order pharmacies and local pharmacies
+    mail_order = df[df.PharmacyZip=='MailOrder']
+    zip_codes = df[df.PharmacyZip!='MailOrder']
 
+    # Define a second pharmacy zip code column in the local pharmacy dataframe
+    # to include a larger area and broaden the search
+    zip_codes['PharmZip'] = zip_codes.apply(lambda row: str(row.PharmacyZip)[:3])
+
+    # Define variables from the input zip code and drug name to match the
+    # two engineered columns
     zipcode_short = str(zipcode)[:3]
     drug_basic = drug.split()[0]
     
-    mail_order = df[df.PharmacyZip=='99999']
-    zip_codes = df[df.PharmacyZip!='99999']
-
-    if drug in set(df.DrugLabelName.values):
-        mail_order_exact = mail_order[mail_order.DrugLabelName==drug]
-        mail_order3 = _cheapest_three(mail_order)
-
-    if str(zipcode) in set(df.PharmacyZip.values):
-        in_zip = zip_codes[zip_codes.PharmacyZip==zipcode]
-        top3_pharmacies = _cheapest_three(in_zip)
-    
-    if not mail_order3:
-        mail_order = mail_order[mail_order.DrugShortName==drug_basic]
-        mail_order_similar = _cheapest_three(mail_order)
-
-    if not top3_pharmacies:
-        zip_codes = zip_codes[zip_codes.PharmZip == zipcode_short]
-        nearby_zips_3 = _cheapest_three(zip_codes)
-        
-    if not mail_order_similar:
+    # MAIL ORDER PHARMACIES
+    # Attempt to get cheapest pharmacies for drug
+    mail_order_options = _get_df(mail_order, drug, drug_basic)
+    if not mail_order_options.empty:
+        mail_order_top = _cheapest(mail_order_options, 5, 'mail order')
+        mail_order_top['EstimatedPrice'] = mail_order_top.apply(lambda row: '${0:.2f}'.format(number*row.UnitCost),
+                                                                axis=1)
+        mail_order_top.drop(columns = ['UnitCost'], inplace=True)
+    else:
+        # Make a list of unique mail order pharmacy names
         mail_order_pharm = mail_order.PharmacyName.unique()
-
+        
+        # Count number of prescriptions filled by each pharmacy and create
+        # a dataframe with the 5 most common
         m_o_pharm_freqs = []
-
         for pharmacy in mail_order_pharm:
             m_o_pharm_freqs.append(mail_order.PharmacyName.tolist().count(pharmacy))
-            mail_order_args = np.argpartition(np.array(m_o_pharm_freqs), 3)[:3]
-            big_3_mail_order = mail_order_pharm[args]
-        
-    if not close3:
-        zip_codes = zip_codes[zip_codes.PharmacyZip==zipcode_short]
-        nearby_zips_3 = _cheapest_three(zip_codes)
+        mail_order_args = np.sort(np.array(m_o_pharm_freqs))
+        mail_order_top = pd.Series(mail_order_pharm[mail_order_args][:5])
 
     
-    if drug_list3 and mail_order3:
-        return # TO DO
-    elif drug_list3 and similar_medications3:
-        return # TO DO
-    elif drug_list3 and common_3_mo:
-        return # TO DO
-    elif mail_order3 and close3:
-        return # TO DO
-    elif mail_order3 and close_pharm:
-        return # TO DO
-    elif close3 and common_3_mo:
-        return # TO DO
-    elif common_3_mo and close3:
-        return # TO DO
+    # LOCAL PHARMACIES
+    # Check if zip code is in the data, then filter by zip code
+    if str(zipcode) in set(zip_codes.PharmacyZip.values):
+        zip_codes = zip_codes[zip_codes.PharmacyZip==zipcode]
+    # Check if broader zip code is in the data, then filter
+    elif zipcode_short in set(zip_codes.PharmZip.values):
+        zip_codes = zip_codes[zip_codes.PharmZip == zipcode_short]
     else:
-        return # common_3_mo
+        zip_codes = pd.DataFrame()
+    # Attempt to get cheapest pharmacies for drug
+    local_options = _get_df(zip_codes, drug, drug_basic)
+    if not local_options.empty:
+        local_top = _cheapest(local_options, 5, 'local')
+        local_top['EstimatedPrice'] = local_top.apply(lambda row: '${0:.2f}'.format(number*row.UnitCost),
+                                                        axis=1)
+        local_top.drop(columns = ['UnitCost'], inplace=True)
+    # Make series of string to display
+    else:
+        local_top = pd.Series(data='Unfortunately, we can\'t find any pharmacies in your area, you can always try one of the mail order pharmacies.')
 
-        
-        
-'''            
-    return {
-        'Pharmacy Name' : table.PharmacyName.iloc[0],
-        'Address' : table.PharmacyStreetAddress1.iloc[0],
-        'City' : table.PharmacyCity.iloc[0],
-        'Zip' : table.PharmacyZip.iloc[0],
-        'Average Price' : '${0:.2f}'.format(number*table.UnitCost.iloc[0]),
-        'Mail Order Pharmacy' : mailorder.PharmacyName.iloc[0],
-        'Average Mail Order Price' : '${0:.2f}'.format(number*mailorder.UnitCost.iloc[0])}'''
-    
+
+    return local_top, mail_order_top    
     
     
     
