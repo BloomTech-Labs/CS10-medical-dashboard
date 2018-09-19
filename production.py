@@ -285,7 +285,24 @@ def get_best_options(zipcode, drug, number, df):
 
     return local_top, mail_order_top    
     
+
+# Function to get best PBM for certain medication
+def best_pbm_for_med(drug, df):
+    # Define a second drug name column to exclude dosage information and
+    # broaden the search
+    df['DrugShortName'] = df.apply(lambda row: row.DrugLabelName.split()[0])
+    # Define variable from the input drug name to match the engineered column
+    drug_basic = drug.split()[0]
     
+    pbm_options = _get_df(df, drug, drug_basic)
+    if not pbm_options.empty:
+        pbms = pbm_options.groupby(['PharmacyName']).mean()
+        idx_sort = np.argsort(np.array(pbms.UnitCost.values))
+        return pd.DataFrame(pbms).loc(columns=['PBMVendor', 'UnitCost']).iloc[idx_sort]
+    else:
+        return pd.Series('We\'re sorry. No PMBs in our records have filled a prescription for this drug.')
+
+
     
     
     
