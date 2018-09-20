@@ -120,11 +120,11 @@ rx_info['PharmacyZipCode'] = rx_info.apply(lambda row: get_zip(row), axis=1)
 
 # Define a second drug name code column in the dataframe
 # to get rid of dosage info
-rx_info['DrugShortName'] = rx_info.apply(lambda row: row.DrugLabelName.split()[0])
+rx_info['DrugShortName'] = rx_info.apply(lambda row: row.DrugLabelName.split()[0], axis=1)
 
 # Define a second pharmacy zip code column in the dataframe
 # to include a larger area
-rx_info['PharmZip'] = rx_info.apply(lambda row: str(row.PharmacyZip)[:3])
+rx_info['PharmZip'] = rx_info.apply(lambda row: str(row.PharmacyZip)[:3], axis=1)
 
 
 
