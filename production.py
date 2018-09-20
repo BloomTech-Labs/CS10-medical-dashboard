@@ -124,7 +124,7 @@ rx_info['DrugShortName'] = rx_info.apply(lambda row: row.DrugLabelName.split()[0
 
 # Define a second pharmacy zip code column in the dataframe
 # to include a larger area
-zip_codes['PharmZip'] = zip_codes.apply(lambda row: str(row.PharmacyZip)[:3])
+rx_info['PharmZip'] = rx_info.apply(lambda row: str(row.PharmacyZip)[:3])
 
 
 
