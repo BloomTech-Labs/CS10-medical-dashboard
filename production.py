@@ -63,7 +63,7 @@ df = pd.concat([df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8, df_9, df_10,
 
 
 # Filtering the dataframe to only include processed ('P') claims
-df_P = df[df.ClaimStatus=='P']
+rx_info = df[df.ClaimStatus=='P']
 
 
 # Defining a function to engineer the total cost of a prescription based on 4 available 
@@ -81,18 +81,18 @@ def get_total(row):
     return max(cost1, cost2)
 
 # Implementing the above function to engineer a new feature for the dataframe
-df_P['TotalCost'] = df_P.apply(lambda row: get_total(row), axis=1)
+rx_info['TotalCost'] = rx_info.apply(lambda row: get_total(row), axis=1)
 
 
 # Some prescriptions resulted in a total cost of less than a dollar. Because this is not 
 # consistent with real-world applications and transactions, this is assumed clerical error. 
 # Data is filtered for realistic costs
-df_pos = df_P[df_P.TotalCost > 5]
+rx_info = rx_info[rx_info.TotalCost > 5]
 
 
 # Deleting commonly empty, corrupt, or unnecessary fields, and dropping rows with 
 # unavailable drug information
-rx_info = df_pos.drop(columns=['PharmacyStreetAddress2', 'PrescriberFirstName', 'PresriberLastName', 
+rx_info = rx_info.drop(columns=['PharmacyStreetAddress2', 'PrescriberFirstName', 'PresriberLastName', 
                                'ClaimStatus']).dropna(subset=['DrugLabelName'])
 
 
@@ -100,13 +100,22 @@ rx_info = df_pos.drop(columns=['PharmacyStreetAddress2', 'PrescriberFirstName', 
 def get_unit_cost(row):
     if float(row['Quantity']) > 0:
         return float(row['TotalCost'])/float(row['Quantity'])
+    elif float(row['DaysSupply'] > 0:
+        return float(row['TotalCost']/float(row['DaysSupply'])
     else:
         return row['TotalCost']
 
 # Applying the function to the dataframe to engineer a cost per dose or Unit Cost feature
 rx_info['UnitCost'] = rx_info.apply(lambda row: get_unit_cost(row), axis=1)
 
-
+# Mail order pharmacies are not restricted to specific zip codes, so we encode them
+# with nonexistent zip codes
+def mail_order_pharm(row):
+    if row['MailOrderPharmacy']=='Y':
+        return '99999'
+    else:
+        return row['PharmacyZipCode']
+                     
 # Some zip codes are the 9 digit zip code while others are the more common 5 digit.
 # Defining a function to ensure all zip codes are the 5 digit version
 def get_zip(row):
@@ -118,6 +127,37 @@ def get_zip(row):
 # Implementing the function to create a second zip code column
 rx_info['PharmacyZipCode'] = rx_info.apply(lambda row: get_zip(row), axis=1)
 
+# Drop the old (now redundant) PharmacyZip column so we can overwrite it and implement
+# the above function
+rx_info.drop(columns=['PharmacyZip'], inplace=True)
+rx_info['PharmacyZip'] = rx_info.apply(lambda row: mail_order_pharm(row), axis=1)
+
+# Drop the old (now redundant) PharmacyZipCode column
+rx_info.drop(columns=['PharmacyZipCode'], inplace=True)
+
+                     
+# Drop unnecessary columns
+rx_info.drop(columns=['AHFSTherapeuticClassCode', 'CoInsurance', 'CompoundDrugIndicator', 'Copay',
+                 'DAWCode', 'DateFilled', 'Deductible', 'DispensingFee', 'FillNumber',
+                 'FormularyStatus', 'Generic', 'GroupNumber', 'IngredientCost', 'MailOrderPharmacy',
+                 'MemberID', 'MultisourceIndicator', 'NDCCode', 'OriginalDataset', 'OutOfPocket',
+                 'PaidAmount', 'PaidOrAdjudicatedDate', 'PharmacyNPI', 'PharmacyNumber',
+                 'PharmacyState', 'PharmacyTaxId', 'PrescriberID', 'RxNumber', 'SeqNum',
+                 'UnitMeasure', 'punbr_grnbr', 'TotalCost'], inplace=True)                     
+                     
+
+                     
+# Fix random white space
+def rid_whitespace(value):
+    if type(value) == str:
+        return ' '.join(value.split())
+    else:
+        return value
+
+for column in list(rx.columns):
+    rx[column] = rx[column].apply(lambda value: rid_whitespace(value))
+                     
+                     
 # Define a second drug name code column in the dataframe
 # to get rid of dosage info
 rx_info['DrugShortName'] = rx_info.apply(lambda row: row.DrugLabelName.split()[0], axis=1)
@@ -127,54 +167,7 @@ rx_info['DrugShortName'] = rx_info.apply(lambda row: row.DrugLabelName.split()[0
 rx_info['PharmZip'] = rx_info.apply(lambda row: str(row.PharmacyZip)[:3], axis=1)
 
 
-
-# Mail order pharmacies are not restricted to specific zip codes, so we encode them
-# with nonexistent zip codes
-def mail_order_pharm(row):
-    if row['MailOrderPharmacy']=='Y':
-        return 99999
-    else:
-        return row['PharmacyZipCode']
-
-# Drop the old (now redundant) PharmacyZip column so we can overwrite it and implement
-# the above function
-rx_info.drop(columns=['PharmacyZip'], inplace=True)
-rx_info['PharmacyZip'] = rx_info.apply(lambda row: mail_order_pharm(row), axis=1)
-
-# Drop the old (now redundant) PharmacyZipCode column
-drug_names = rx_info.drop(columns=['PharmacyZipCode'])
-
-
-# Fix random white space
-def rid_whitespace(value):
-    if type(value) == str:
-        return ' '.join(value.split())
-    else:
-        return value
-    
-
-# Get rid of erroneous white space in DrugLabelName
-drug_names.DrugLabelName = drug_names.DrugLabelName.apply(lambda drug: rid_whitespace(drug))
-drug_names.PharmacyNPI = drug_names.PharmacyNPI.apply(lambda NPI: rid_whitespace(NPI))
-drug_names.PharmacyName = drug_names.PharmacyName.apply(lambda name: rid_whitespace(name))
-drug_names.PharmacyStreetAddress1 = drug_names.PharmacyStreetAddress1.apply(lambda address: rid_whitespace(address))
-drug_names.PharmacyCity = drug_names.PharmacyCity.apply(lambda city: rid_whitespace(city))
-
-
-
-
-# Columns: ['AHFSTherapeuticClassCode', 'CoInsurance', 'CompoundDrugIndicator',
-# 'Copay', 'DAWCode', 'DateFilled', 'DaysSupply', 'Deductible',
-# 'DispensingFee', 'DrugLabelName', 'FillNumber', 'FormularyStatus',
-# 'Generic', 'GroupNumber', 'IngredientCost', 'MailOrderPharmacy',
-# 'MemberID', 'MultisourceIndicator', 'NDCCode', 'OriginalDataset',
-# 'OutOfPocket', 'PBMVendor', 'PaidAmount', 'PaidOrAdjudicatedDate',
-# 'PharmacyCity', 'PharmacyNPI', 'PharmacyName', 'PharmacyNumber',
-# 'PharmacyState', 'PharmacyStreetAddress1', 'PharmacyTaxId',
-# 'PrescriberID', 'Quantity', 'RxNumber', 'SeqNum', 'UnitMeasure',
-# 'punbr_grnbr', 'TotalCost', 'UnitCost', 'PharmacyZip']
-
-
+                     
 
 # Helper function for get_best_options/get_df to return a sorted dataframe of
 # a specified number of entries based on price
