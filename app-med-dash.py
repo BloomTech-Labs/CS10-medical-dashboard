@@ -23,7 +23,7 @@ def _cheapest(df, n, pharm_type='local'):
     if len(idx_sort) > n:
         # Specify which columns to output based on whether the pharmacy is local
         # or mail order
-        if pharm_type = 'local':
+        if pharm_type == 'local':
             return pd.DataFrame(pharmacies).loc(columns=['PharmacyName', 
                                                          'PharmacyStreetAddress1',
                                                          'PharmacyCity',
@@ -35,7 +35,7 @@ def _cheapest(df, n, pharm_type='local'):
     else:
         # Specify which columns to output based on whether the pharmacy is local
         # or mail order
-        if pharm_type = 'local':
+        if pharm_type == 'local':
             return pd.DataFrame(pharmacies).loc(columns=['PharmacyName',
                                                          'PharmacyStreetAddress1',
                                                          'PharmacyCity',
@@ -216,12 +216,13 @@ app.layout = html.Div([
         State('input-2a', 'value'),
         State('input-3a', 'value'),
     ])
-    def update_output(n_clicks, input1, input2, input3):
-        local_top, mail_order_top = get_best_options(input3, input1, input2, df)
-        return html.Div([
+def update_output(n_clicks, input1, input2, input3):
+    local_top, mail_order_top = get_best_options(input3, input1, input2, df)
+    return html.Div([
             html.Div(children=[
                 html.H4(children='Local Pharmacies'),
-                generate_table(local_top)),
+                generate_table(local_top),
+            ])
             html.Div(children=[
                 html.H4(children='Mail Order Pharmacies'),
                 generate_table(mail_order_top),
@@ -233,7 +234,7 @@ app.layout = html.Div([
     Output('output-b', 'children'),
         [Input('submit-button', 'n_clicks')],
         [State('input-1b', 'value'),
-    def update_output(n_clicks, input1):
+def update_output(n_clicks, input1):
     return html.Div(children=[
         html.H4(children='Pharmacy Benefit Managers Ranked by Price'),
         generate_table(best_pbm_for_med(input1, df)),
@@ -242,3 +243,4 @@ app.layout = html.Div([
 
 if __name__ == '__main__':
     app.run_server(debug=True)
+         
