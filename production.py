@@ -290,3 +290,27 @@ df_Envision_avg_UC['UnitCost'].mean()
 df_Medco_avg_UC['UnitCost'].mean()
 # DrugLabelName: 95.43536290363183
 # DrugShortName: 100.33072460418295
+
+dfff = pd.DataFrame({'PBMVendor':['MedImpact\n:Rows:393,816',
+                                  'CVSPAL4000\n:Rows:2,455,032',
+                                  'SouthernScripts\n:Rows:15,225',
+                                  'Nemop\n:Rows:4,657',
+                                  'Magellan\n:Rows:95,969',
+                                  'Welldyne\n:Rows:11,627',
+                                  'National\n:Rows:1,286',
+                                  'Envision\n:Rows:89,209',
+                                  'Medco\n:Rows:593,886'],
+                    'AvgUnitCost':[64.42,
+                                   89.12,
+                                   1.54,
+                                   9.55,
+                                   47.54,
+                                   203.62,
+                                   11.16,
+                                   95.13,
+                                   100.32]})
+
+dfff = dfff.reindex_axis(['PBMVendor','AvgUnitCost'], axis=1)
+dfff
+
+dfff.plot.bar(x='PBMVendor', y='AvgUnitCost', rot=45)
