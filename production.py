@@ -7,35 +7,35 @@ import statistics as stats
 
 
 # Importing the files as pandas dataframes
-df_1 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20161101.csv', 
+df_1 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20161101.csv',
                    sep='|', index_col='ClaimID', dtype=str, na_values=['nan', '  ', ' '])
-df_2 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20161108.csv', 
+df_2 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20161108.csv',
                    sep='|', index_col='ClaimID', dtype=str, na_values=['nan', '  ', ' '])
-df_3 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20161116.csv', 
+df_3 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20161116.csv',
                    sep='|', index_col='ClaimID', dtype=str, na_values=['nan', '  ', ' '])
-df_4 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20161122.csv', 
+df_4 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20161122.csv',
                    sep='|', index_col='ClaimID', dtype=str, na_values=['nan', '  ', ' '])
-df_5 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20161129.csv', 
+df_5 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20161129.csv',
                    sep='|', index_col='ClaimID', dtype=str, na_values=['nan', '  ', ' '])
-df_6 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20161206.csv', 
+df_6 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20161206.csv',
                    sep='|', index_col='ClaimID', dtype=str, na_values=['nan', '  ', ' '])
-df_7 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170110.csv', 
+df_7 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170110.csv',
                    sep='|', index_col='ClaimID', dtype=str, na_values=['nan', '  ', ' '])
-df_8 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170116.csv', 
+df_8 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170116.csv',
                    sep='|', index_col='ClaimID', dtype=str, na_values=['nan', '  ', ' '])
-df_9 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170117.csv', 
+df_9 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170117.csv',
                    sep='|', index_col='ClaimID', dtype=str, na_values=['nan', '  ', ' '])
-df_10 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170124.csv', 
+df_10 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170124.csv',
                     sep='|', index_col='ClaimID', dtype=str, na_values=['nan', '  ', ' '])
-df_11 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170131.csv', 
+df_11 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170131.csv',
                     sep='|', index_col='ClaimID', dtype=str, na_values=['nan', '  ', ' '])
-df_12 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170207.csv', 
+df_12 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170207.csv',
                     sep='|', index_col='ClaimID', dtype=str, na_values=['nan', '  ', ' '])
-df_13 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170214.csv', 
+df_13 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170214.csv',
                     sep='|', index_col='ClaimID', dtype=str, na_values=['nan', '  ', ' '])
-df_14 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170221.csv', 
+df_14 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170221.csv',
                     sep='|', index_col='ClaimID', dtype=str, na_values=['nan', '  ', ' '])
-df_15 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170301.csv', 
+df_15 = pd.read_csv('/Users/joannejordan/Desktop/RxClaims/Rx_BenefitPlan_20170301.csv',
                     sep='|', index_col='ClaimID', dtype=str, na_values=['nan', '  ', ' '])
 
 
@@ -58,7 +58,7 @@ df_15['OriginalDataset'] = 0
 
 
 # Combining all dataframes into one
-df = pd.concat([df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8, df_9, df_10, 
+df = pd.concat([df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8, df_9, df_10,
                 df_11, df_12, df_13, df_14, df_15])
 
 
@@ -66,7 +66,7 @@ df = pd.concat([df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8, df_9, df_10,
 df_P = df[df.ClaimStatus=='P']
 
 
-# Defining a function to engineer the total cost of a prescription based on 4 available 
+# Defining a function to engineer the total cost of a prescription based on 4 available
 # cost metrics--not all of which are provided for each claim
 def get_total(row):
     if row['IngredientCost'] and row['DispensingFee']:
@@ -75,24 +75,24 @@ def get_total(row):
         cost1 = float(row['IngredientCost'])
     else:
         cost1 = 0
-        
+
     cost2 = float(row['OutOfPocket']) + float(row['PaidAmount'])
-        
+
     return max(cost1, cost2)
 
 # Implementing the above function to engineer a new feature for the dataframe
 df_P['TotalCost'] = df_P.apply(lambda row: get_total(row), axis=1)
 
 
-# Some prescriptions resulted in a total cost of less than a dollar. Because this is not 
-# consistent with real-world applications and transactions, this is assumed clerical error. 
+# Some prescriptions resulted in a total cost of less than a dollar. Because this is not
+# consistent with real-world applications and transactions, this is assumed clerical error.
 # Data is filtered for realistic costs
 df_pos = df_P[df_P.TotalCost > 5]
 
 
-# Deleting commonly empty, corrupt, or unnecessary fields, and dropping rows with 
+# Deleting commonly empty, corrupt, or unnecessary fields, and dropping rows with
 # unavailable drug information
-rx_info = df_pos.drop(columns=['PharmacyStreetAddress2', 'PrescriberFirstName', 'PresriberLastName', 
+rx_info = df_pos.drop(columns=['PharmacyStreetAddress2', 'PrescriberFirstName', 'PresriberLastName',
                                'ClaimStatus']).dropna(subset=['DrugLabelName'])
 
 
@@ -164,80 +164,153 @@ def get_cheapest_pharm(zipcode, drug, table):
     pharmacy = pharmacies.UnitCost.idxmin()
     # Filter table by pharmacy name so we can print address and city with name
     table = table[table.PharmacyName==pharmacy]
-    print('Pharmacy:\n{}\nAddress:\n{}\n{}'.format(table.PharmacyName.iloc[0], 
+    print('Pharmacy:\n{}\nAddress:\n{}\n{}'.format(table.PharmacyName.iloc[0],
                                                    table.PharmacyStreetAddress1.iloc[0],
                                                    table.PharmacyCity.iloc[0]))
 
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
 ### Clayton's Code
-# Effective exploratory code
-#
 print(df_1.PBMVendor.unique())
 print(df_1.DrugLabelName.nunique())
-df_1.groupby(['PBMVendor'], as_index=False)['UnitCost'].mean()
-df_1.groupby(['PBMVendor','DrugLabelName'], as_index=False)['UnitCost'].mean()
 
-# 5x for top 5 most common drugs
+# Cheapest PBM Overall
 #
-most_common = df_1[df_1.DrugLabelName != 'PROAIR HFA AER']
-most_common['DrugLabelName'].value_counts().idxmax()
-
-# Find the 5 most common druglabelnames in the dataset
-# 1- LISINOPRIL
-# 2- PROAIR HFA AER
-# 3- FLUTICASONE SPR 50MCG
-# 4- OMEPRAZOLE CAP 20MG
-# 5- SIMVASTATIN
-
-print(drug1LISIN.PBMVendor.unique())
-print(drug2PRO.PBMVendor.unique())
-print(drug3FLUT.PBMVendor.unique())
-print(drug4OMEP.PBMVendor.unique())
-print(drug5SIMVAS.PBMVendor.unique())
-
-# PBM results
-# ['MedImpact' 'Medco' 'CVSPAL4000']
-# ['CVSPAL4000' 'Welldyne' 'National' 'Envision']
-# ['CVSPAL4000' 'Welldyne' 'Envision']
-# ['CVSPAL4000' 'Welldyne' 'Envision']
-# ['MedImpact' 'Medco' 'CVSPAL4000']
 #
-col_list = ['PBMVendor', 'DrugLabelName']
-top5drugs = df_1[col_list]
+# Create DF of ['PBMVendor', 'DrugShortName', 'UnitCost'] columns
+col_list = ['PBMVendor', 'DrugShortName', 'UnitCost']
+df_pbm_drug_cost = df_1[col_list]
 
-# Unique PBMs of top5drugs DF
-#
-top5drugs.PBMVendor.unique()
+# Separate DF in to 1 DF per PBM
+df_MedImpact = df_pbm_drug_cost[df_pbm_drug_cost.PBMVendor == 'MedImpact']
+df_CVSPAL4000 = df_pbm_drug_cost[df_pbm_drug_cost.PBMVendor == 'CVSPAL4000']
+df_SouthernScripts = df_pbm_drug_cost[df_pbm_drug_cost.PBMVendor == 'SouthernScripts']
 
-# 5 DFs for each of 5 most common drugs
-drug1PRO = top5drugs.loc[top5drugs['DrugLabelName'] == 'PROAIR HFA AER']
-drug2HYDRO = top5drugs.loc[top5drugs['DrugLabelName'] == 'HYDROCHLOROT TAB 25MG']
-drug3AZIT = top5drugs.loc[top5drugs['DrugLabelName'] == 'AZITHROMYCIN TAB 250MG']
-drug4OMEP = top5drugs.loc[top5drugs['DrugLabelName'] == 'OMEPRAZOLE CAP 20MG']
-drug5LISI = top5drugs.loc[top5drugs['DrugLabelName'] == 'LISINOPRIL TAB 10MG']
+df_Nemop = df_pbm_drug_cost[df_pbm_drug_cost.PBMVendor == 'Nemop']
+df_Magellan = df_pbm_drug_cost[df_pbm_drug_cost.PBMVendor == 'Magellan']
 
-# Bar Graphs for each Drug and their PBMs
-drug1LISIN_2=drug1LISIN.groupby(['PBMVendor','DrugLabelName']).size()
-drug1LISIN_2=drug1LISIN_2.unstack()
-drug1LISIN_2.plot(kind='bar')
+# Welldyne 11,627 rows
+df_Welldyne = df_pbm_drug_cost[df_pbm_drug_cost.PBMVendor == 'Welldyne']
 
-drug2PRO_2=drug2PRO.groupby(['PBMVendor','DrugLabelName']).size()
-drug2PRO_2=drug2PRO_2.unstack()
-drug2PRO_2.plot(kind='bar')
+# National 1,286 rows
+df_National = df_pbm_drug_cost[df_pbm_drug_cost.PBMVendor == 'National']
 
-drug3FLUT_2=drug3FLUT.groupby(['PBMVendor','DrugLabelName']).size()
-drug3FLUT_2=drug3FLUT_2.unstack()
-drug3FLUT_2.plot(kind='bar')
+# Envision 89,209 rows
+df_Envision = df_pbm_drug_cost[df_pbm_drug_cost.PBMVendor == 'Envision']
+df_Medco = df_pbm_drug_cost[df_pbm_drug_cost.PBMVendor == 'Medco']
 
-drug4OMEP_2=drug4OMEP.groupby(['PBMVendor','DrugLabelName']).size()
-drug4OMEP_2=drug4OMEP_2.unstack()
-drug4OMEP_2.plot(kind='bar')
+# Finds Intersection of DrugShortName for each PBM in df_1
+all_drugs = (set(df_MedImpact.DrugShortName.values) and
+             set(df_CVSPAL4000.DrugShortName.values) and
+             set(df_SouthernScripts.DrugShortName.values) and
+             set(df_Nemop.DrugShortName.values) and
+             set(df_Magellan.DrugShortName.values) and
+             set(df_Welldyne.DrugShortName.values) and
+             set(df_National.DrugShortName.values) and
+             set(df_Envision.DrugShortName.values) and
+             set(df_Medco.DrugShortName.values));
 
-drug5SIMVAS_2=drug5SIMVAS.groupby(['PBMVendor','DrugLabelName']).size()
-drug5SIMVAS_2=drug5SIMVAS_2.unstack()
-drug5SIMVAS_2.plot(kind='bar')
+# Filter so only those drugs exist in each PMB DF
+df_MedImpact = df_MedImpact[df_MedImpact['DrugShortName'].isin(all_drugs)]
+df_CVSPAL4000 = df_CVSPAL4000[df_CVSPAL4000['DrugShortName'].isin(all_drugs)]
+df_SouthernScripts = df_SouthernScripts[df_SouthernScripts['DrugShortName'].isin(all_drugs)]
+
+df_Nemop = df_Nemop[df_Nemop['DrugShortName'].isin(all_drugs)]
+df_Magellan = df_Magellan[df_Magellan['DrugShortName'].isin(all_drugs)]
+df_Welldyne = df_Welldyne[df_Welldyne['DrugShortName'].isin(all_drugs)]
+
+df_National = df_National[df_National['DrugShortName'].isin(all_drugs)]
+df_Envision = df_Envision[df_Envision['DrugShortName'].isin(all_drugs)]
+df_Medco = df_Medco[df_Medco['DrugShortName'].isin(all_drugs)]
+
+# For EACH drug, find PBM with lowest cost
+# Average drug UnitCost for each drug per PBM
+# UC = UnitCost
+df_MedImpact_avg_UC = df_MedImpact.groupby(['DrugShortName'], as_index=False)['UnitCost'].mean()
+df_CVSPAL4000_avg_UC = df_CVSPAL4000.groupby(['DrugShortName'], as_index=False)['UnitCost'].mean()
+df_SouthernScripts_avg_UC = df_SouthernScripts.groupby(['DrugShortName'], as_index=False)['UnitCost'].mean()
+
+df_Nemop_avg_UC = df_Nemop.groupby(['DrugShortName'], as_index=False)['UnitCost'].mean()
+df_Magellan_avg_UC = df_Magellan.groupby(['DrugShortName'], as_index=False)['UnitCost'].mean()
+df_Welldyne_avg_UC = df_Welldyne.groupby(['DrugShortName'], as_index=False)['UnitCost'].mean()
+
+df_National_avg_UC = df_National.groupby(['DrugShortName'], as_index=False)['UnitCost'].mean()
+df_Envision_avg_UC = df_Envision.groupby(['DrugShortName'], as_index=False)['UnitCost'].mean()
+df_Medco_avg_UC = df_Medco.groupby(['DrugShortName'], as_index=False)['UnitCost'].mean()
+
+# UnitCost avg of all drugs PER PBM
+
+# Total # of Rows: 3,660,707
+
+# 393,816 rows with df_1.PBMVendor == MedImpact
+df_MedImpact_avg_UC['UnitCost'].mean()
+# DrugLabelName: 71.75219318813778
+# DrugShortName: 64.44488749956898
+
+# 2,455,032 rows with df_1.PBMVendor == CVSPAL4000
+df_CVSPAL4000_avg_UC['UnitCost'].mean()
+# DrugLabelName: 61.51118988815909
+# DrugShortName: 89.12452585515857
+
+# 15,225 rows with df_1.PBMVendor == SouthernScripts
+df_SouthernScripts_avg_UC['UnitCost'].mean()
+# DrugLabelName: 0.792625
+# DrugShortName: 1.5449279328165377
+
+# 4,657 rows with df_1.PBMVendor == Nemop
+df_Nemop_avg_UC['UnitCost'].mean()
+# DrugLabelName: 32.01
+# DrugShortName: 9.555713468720821
+
+# 95,969 rows with df_1.PBMVendor == Magellan
+df_Magellan_avg_UC['UnitCost'].mean()
+# DrugLabelName: 6.531493055555555
+# DrugShortName: 47.544123990240315
+
+# 11,627 rows with df_1.PBMVendor == Welldyne
+df_Welldyne_avg_UC['UnitCost'].mean()
+# DrugLabelName: nan
+# DrugShortName: 203.62729668974353
+
+# 1,286 rows with df_1.PBMVendor == National
+df_National_avg_UC['UnitCost'].mean()
+# DrugLabelName: nan
+# DrugShortName: 11.161770536432297
+
+# 89,209 rows with df_1.PBMVendor == Envision
+df_Envision_avg_UC['UnitCost'].mean()
+# DrugLabelName: nan
+# DrugShortName: 95.13871288531323
+
+# 593,886 rows with df_1.PBMVendor == Medco
+df_Medco_avg_UC['UnitCost'].mean()
+# DrugLabelName: 95.43536290363183
+# DrugShortName: 100.33072460418295
+
+dfff = pd.DataFrame({'PBMVendor':['MedImpact\n:Rows:393,816',
+                                  'CVSPAL4000\n:Rows:2,455,032',
+                                  'SouthernScripts\n:Rows:15,225',
+                                  'Nemop\n:Rows:4,657',
+                                  'Magellan\n:Rows:95,969',
+                                  'Welldyne\n:Rows:11,627',
+                                  'National\n:Rows:1,286',
+                                  'Envision\n:Rows:89,209',
+                                  'Medco\n:Rows:593,886'],
+                    'AvgUnitCost':[64.42,
+                                   89.12,
+                                   1.54,
+                                   9.55,
+                                   47.54,
+                                   203.62,
+                                   11.16,
+                                   95.13,
+                                   100.32]})
+
+dfff = dfff.reindex_axis(['PBMVendor','AvgUnitCost'], axis=1)
+dfff
+
+dfff.plot.bar(x='PBMVendor', y='AvgUnitCost', rot=45)
