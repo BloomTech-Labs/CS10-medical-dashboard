@@ -413,26 +413,42 @@ df_Medco_avg_UC['UnitCost'].mean()
 # DrugLabelName: 95.43536290363183
 # DrugShortName: 100.33072460418295
 
-dfff = pd.DataFrame({'PBMVendor':['MedImpact\n:Rows:393,816',
+######## VISUALIZATIONS
+
+######## Bar Chart Showing Average UnitCost per PBMVendor
+# Lowest bar means Cheapest PBMVendor
+df_AvgUnitCost_per_PBM = pd.DataFrame({'PBMVendor':['MedImpact\n:Rows:393,816',
                                   'CVSPAL4000\n:Rows:2,455,032',
-                                  'SouthernScripts\n:Rows:15,225',
-                                  'Nemop\n:Rows:4,657',
                                   'Magellan\n:Rows:95,969',
-                                  'Welldyne\n:Rows:11,627',
-                                  'National\n:Rows:1,286',
                                   'Envision\n:Rows:89,209',
                                   'Medco\n:Rows:593,886'],
                     'AvgUnitCost':[64.42,
                                    89.12,
-                                   1.54,
-                                   9.55,
                                    47.54,
-                                   203.62,
-                                   11.16,
                                    95.13,
                                    100.32]})
 
-dfff = dfff.reindex_axis(['PBMVendor','AvgUnitCost'], axis=1)
-dfff
+df_AvgUnitCost_per_PBM = df_AvgUnitCost_per_PBM.reindex_axis(['PBMVendor','AvgUnitCost'], axis=1)
 
-dfff.plot.bar(x='PBMVendor', y='AvgUnitCost', rot=45)
+print("For the mean of all drugs UnitCost per PBM, Magellan has the lowest average. Magellan is arguably the Cheapest PBM Overall.")
+df_AvgUnitCost_per_PBM.plot.bar(x='PBMVendor', y='AvgUnitCost', rot=15)
+
+####### PIE CHART
+# For what percentage of rows in data set belong to each PBMVendor
+#
+print("Data set has a total of 3,660,707 rows.")
+print("This Pie Chart shows what percentage of rows in the data set belong to each PBMVendor. 4 PBMVendors have been removed from original data set that had < 16,000 rows of data. That is too small to count on.")
+
+# PBMs with less than 16,000 rows are removed
+
+# Pie chart, where the slices will be ordered and plotted counter-clockwise:
+labels = 'MedImpact', 'CVSPAL4000', 'Magellan', 'Envision', 'Medco'
+sizes = [393816, 2455032, 95969, 89209, 593886]
+# explode = (0, 0.1, 0, 0)
+
+fig1, ax1 = plt.subplots()
+ax1.pie(sizes, labels=labels, autopct='%1.1f%%',
+        shadow=True, startangle=90)
+ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+plt.show()
