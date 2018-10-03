@@ -1,0 +1,26 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Home</li>
+    <li class="breadcrumb-item"><a href="{% url 'pharmacy_info' %}">Pharmacy Information</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'PBM_info' %}">PBM Information</a></li>
+  </ol>
+</nav>
+
+
+<div class="p-3 mb-2 bg-info text-white mx-3">
+  <h1 class="mx-5 text-center">PharmaSee</h1>
+</div>
+<p class="mx-5 text-info text-center">Welcome to PharmaSee, a website developed by <em>LambdaSchool labs7 Medical Dashboard Team</em>!</p>
+<div class="alert alert-info mx-3" role="alert">
+  <h2 class="mx-5">What is this?</h2>
+  <p class="mx-5">We're here to give you the pharmacy information you need to be an informed consumer.</p>
+  <p class="mx-5">For patients looking for a pharmacy to full a prescription, please select "Pharmacy Information" in the navigation toolbar.</p>
+  <p class="mx-5">For organizations or individuals looking for information on Pharmacy Benefits Managers, please select "PBM Information" in the navigation toolbar.</p>
+</div>

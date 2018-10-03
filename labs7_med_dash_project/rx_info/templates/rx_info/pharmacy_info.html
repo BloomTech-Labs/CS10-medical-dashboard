@@ -1,0 +1,32 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<!-- Navigation bar -->
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Pharmacy Information</li>
+    <li class="breadcrumb-item"><a href="{% url 'PBM_info' %}">PBM Information</a></li>
+  </ol>
+</nav>
+
+<!-- Title -->
+<div class="p-3 mb-2 bg-info text-white mx-3">
+  <h1 class="mx-5 text-center">Pharmacy Information</h1>
+</div>
+<p class="mx-5 text-info">To find a pharmacy near you or a mail order pharmacy where you can fill your prescription without breaking the bank, enter the information below and press submit.</p>
+
+<!-- Form requests -->
+<div class="jumbotron mx-3">
+  {% block content %}
+    <h1>Pharmacy Information</h1>
+    <form action="{% url 'pharmacy_results' %}" method="GET" class="mx-5">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Submit</button>
+    </form>
+  {% endblock %}
+</div>  
