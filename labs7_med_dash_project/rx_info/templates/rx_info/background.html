@@ -1,0 +1,24 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<!-- Navigation bar -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'pharmacy_info' %}">Pharmacy Information</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'PBM_info' %}">PBM Information</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Background Information</a></li>
+    </ol>
+</nav>
+
+<!-- Title -->
+<div class="p-3 mb-2 bg-info text-white mx-3">
+  <h1 class="mx-5 text-center">Background Information</h1>
+</div>
+
+<!-- Description -->
+<p class="mx-5 text-info text-center">We started with 15 separate, only partially standardized, csv files of almost 4 million prescription claims. This is how we got to this website.</p>
