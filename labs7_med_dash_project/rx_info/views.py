@@ -9,6 +9,10 @@ import pandas as pd
 def home(request):
     return render(request, 'rx_info/home.html', {})
 
+# Background code page
+def background(request):
+    return render(request, 'rx_info/background.html', {})
+
 # Local pharmay search page
 def pharmacy_info(request):
     form = forms.pharmacyForm()
